@@ -1,0 +1,1127 @@
+<section class="product-carousel-section page-width">
+  <!-- <h2 class="title">{{ section.settings.heading }}</h2> -->
+  <div class="drink_subscription">
+    <div class="carousel_view">
+      <div class="carousel-nav-wrapper">
+        <button class="carousel-btn left " onclick="scrollCarousel(this, -1)">←</button>
+        <div class="product-carousel-wrapper">
+          <div class="product-carousel">
+            {% for block in section.blocks %}
+              {% if block.type == 'slide' %}
+                <div class="carousel-slide">
+                  {% if block.settings.image %}
+                    {% assign image = block.settings.image %}
+                    <img
+                      src="{{ image | image_url: width: 600 }}"
+                      width="{{ image.width | default: 600 }}"
+                      height="{{ image.height | default: 700 }}"
+                      alt="{{ block.settings.alt | escape }}"
+                      loading="lazy"
+                      class="carousel-slide-image"
+                      id="carousel_image_id_{{block.id}}"
+                    >
+                  {% else %}
+                    <div class="carousel-slide-placeholder">
+                      <span>No Image {{ block.type }}</span>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.caption != blank %}
+                    <p>{{ block.settings.caption }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <button class="carousel-btn right" onclick="scrollCarousel(this, 1)">→</button>
+      </div>
+
+      <div class="image_list">
+        {% for block in section.blocks %}
+          {% if block.type == 'slide' %}
+            <div class="image_item" onClick="click_Item_To_getScroll('carousel_image_id_{{block.id}}')">
+              {% if block.settings.image %}
+                {% assign image = block.settings.image %}
+                <img
+                  src="{{ image | image_url: width: 100 }}"
+                  width="{{ image.width | default: 100 }}"
+                  height="{{ image.height | default: 100 }}"
+                  alt="{{ block.settings.alt | escape }}"
+                  loading="lazy"
+                >
+
+              {% elsif block.type == 'slide' %}
+                <div class="no_Image_text">
+                  <span>No Image </span>
+                </div>
+              {% endif %}
+
+              {% if block.settings.caption != blank %}
+                <p>{{ block.settings.caption }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="subscription_cart">
+      <h2 class="drink_subscription_heading">{{ section.settings.heading }}</h2>
+      <p class="subscription_detail">
+        {{ section.settings.description }}
+      </p>
+      <div class="product_select_cart">
+        <h2 class="highlight_heading">{{ section.settings.highlight }}</h2>
+        <form class="product__highlight_list">
+          {% for block in section.blocks %}
+            <!-- For one row -->
+            {% if block.type == 'highlight_list_item' %}
+              <div class="product_detail" id="product_id_{{ block.id }}">
+                <div class="product_detail_opend">
+                  <div>
+                    <input
+                      type="radio"
+                      onclick="toggaleProductCartCheckBox(this, 'product_id_{{ block.id }}','product_item_list_id_{{ block.id }}')"
+                      value="on"
+                      checked
+                      id="product_radio_{{ block.id }}"
+                      name="product_radio_{{ block.id }}"
+                    >
+                    <label class="product_detail_opend_label">{{ block.settings.label }}</label>
+                  </div>
+                  <p>
+                    {% assign price = block.settings.price %}
+                    {% assign dsicount_price = price | times: block.settings.discountPercentage | divided_by: 100 %}
+                    {% assign actual_price = price | minus: dsicount_price %}
+                    {% if price > 0 and block.settings.discountPercentage > 0 %}
+                      <span> {{ actual_price | times: 100 | money }}</span>
+                      <del> {{ price | times: 100 | money }}</del>
+                    {% else %}
+                      <span> {{ price | times: 100 | money }}</span>
+                    {% endif %}
+                  </p>
+                </div>
+                <div class="product_select">
+                  <h2 class="product_suggestion">{{ block.settings.productSuggestion }}</h2>
+                </div>
+                <div class="product_list">
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="{{ block.settings.product_cart_1_1.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_1.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_1.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_1.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_1.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_1.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_1.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="{{ block.settings.product_cart_1_2.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_2.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_2.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_2.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_2.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_2.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_2.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="{{ block.settings.product_cart_1_3.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_3.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_3.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_3.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_3.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_3.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_3.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+                <div class="attribute-wrapper">
+                  <h3>{{ block.settings.attributeQuestion }}</h3>
+
+                  <img
+                    src="{{ block.settings.bannerImage | image_url: width: 400 }}"
+                    width="{{ block.settings.bannerImage?.width | default: 400 }}"
+                    height="{{ block.settings.bannerImage?.height | default:200 }}"
+                    alt="{{ block.settings.bannerImage?.title | escape }}"
+                    loading="lazy"
+                    class="banner-image"
+                  >
+
+                  <div class="attribute-points">
+                    {{ block.settings.attributePoint }}
+                  </div>
+                </div>
+              </div>
+              <div class="product_highlight_list_item" id="product_item_list_id_{{ block.id }}">
+                <div>
+                  <input
+                    type="radio"
+                    onclick="toggaleProductCartCheckBox(this, 'product_id_{{ block.id }}','product_item_list_id_{{ block.id }}')"
+                    value="on"
+                    name="product_radio_{{ block.id }}"
+                  >
+                  <label>{{ block.settings.label }}</label>
+                </div>
+                <p>
+                  {% assign price = block.settings.price %}
+                  {% assign dsicount_price = price | times: block.settings.discountPercentage | divided_by: 100 %}
+                  {% assign actual_price = price | minus: dsicount_price %}
+                  {% if price > 0 and block.settings.discountPercentage > 0 %}
+                    <span> {{ actual_price | times: 100 | money }}</span>
+                    <del> {{ price | times: 100 | money }}</del>
+                  {% else %}
+                    <span> {{ price | times: 100 | money }}</span>
+                  {% endif %}
+                </p>
+              </div>
+              <!--
+                <div>
+                  <h2 class="product_suggestion">{{ block.settings.productSuggestion }}</h2>
+                </div>
+              -->
+            {% endif %}
+
+            <!-- For two row -->
+            {% if block.type == 'highlight_list_item_2' %}
+              <div class="product_detail" id="product_id_{{ block.id }}">
+                <div class="product_detail_opend">
+                  <div>
+                    <input
+                      type="radio"
+                      onclick="toggaleProductCartCheckBox(this, 'product_id_{{ block.id }}','product_item_list_id_{{ block.id }}')"
+                      value="on"
+                      checked
+                      name="product_radio_{{ block.id }}"
+                    >
+                    <label class="product_detail_opend_label">{{ block.settings.label }}</label>
+                  </div>
+                  <p>
+                    {% assign price = block.settings.price %}
+                    {% assign dsicount_price = price | times: block.settings.discountPercentage | divided_by: 100 %}
+                    {% assign actual_price = price | minus: dsicount_price %}
+                    {% if price > 0 and block.settings.discountPercentage > 0 %}
+                      <span> {{ actual_price | times: 100 | money }}</span>
+                      <del> {{ price | times: 100 | money }}</del>
+                    {% else %}
+                      <span> {{ price | times: 100 | money }}</span>
+                    {% endif %}
+                  </p>
+                </div>
+                <div class="product_select">
+                  <h2 class="product_suggestion">{{ block.settings.productSuggestion }}</h2>
+                </div>
+                <div class="product_list">
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_1_1.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_1.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_1.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_1.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_1.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_1.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_1.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_1_2.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_2.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_2.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_2.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_2.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_2.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_2.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_1_3.variants.first.id }}"
+                        value="{{ block.settings.product_cart_1_3.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_1_3.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_1_3.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_1_3.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_1_3.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_1_3.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+                <div class="product_select2">
+                  <h2 class="product_suggestion">{{ block.settings.productSuggestion2 }}</h2>
+                </div>
+                <div class="product_list">
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_2_1.variants.first.id }}"
+                        value="{{ block.settings.product_cart_2_1.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_2_1.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_2_1.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_2_1.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_2_1.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_2_1.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_2_2.variants.first.id }}"
+                        value="{{ block.settings.product_cart_2_2.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_2_2.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_2_2.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_2_2.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_2_2.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_2_2.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+
+                  <div class="product_card">
+                    <div>
+                      <input
+                        type="radio"
+                        name="product_option"
+                        id="double_{{ block.settings.product_cart_2_3.variants.first.id }}"
+                        value="{{ block.settings.product_cart_2_3.variants.first.id }}"
+                      >
+                      <p>{{ block.settings.product_cart_2_3.title }}</p>
+                    </div>
+
+                    <img
+                      src="{{ block.settings.product_cart_2_3.featured_image | image_url: width: 100 }}"
+                      width="{{ block.settings.product_cart_2_3.width | default: 100 }}"
+                      height="{{ block.settings.product_cart_2_3.height | default: 100 }}"
+                      alt="{{ block.settings.product_cart_2_3.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+                <div class="attribute-wrapper">
+                  <h3>{{ block.settings.attributeQuestion }}</h3>
+
+                  <img
+                    src="{{ block.settings.bannerImage | image_url: width: 400 }}"
+                    width="{{ block.settings.bannerImage?.width | default: 400 }}"
+                    height="{{ block.settings.bannerImage?.height | default:200 }}"
+                    alt="{{ block.settings.bannerImage?.title | escape }}"
+                    loading="lazy"
+                    class="banner-image"
+                  >
+
+                  <div class="attribute-points">
+                    {{ block.settings.attributePoint }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="product_highlight_list_item" id="product_item_list_id_{{ block.id }}">
+                <div>
+                  <input
+                    type="radio"
+                    onclick="toggaleProductCartCheckBox(this, 'product_id_{{ block.id }}','product_item_list_id_{{ block.id }}')"
+                    value="on"
+                    name="product_radio_{{ block.id }}"
+                  >
+                  <label>{{ block.settings.label }}</label>
+                </div>
+                <p>
+                  {% assign price = block.settings.price %}
+                  {% assign dsicount_price = price | times: block.settings.discountPercentage | divided_by: 100 %}
+                  {% assign actual_price = price | minus: dsicount_price %}
+                  {% if price > 0 and block.settings.discountPercentage > 0 %}
+                    <span> {{ actual_price | times: 100 | money }}</span>
+                    <del> {{ price | times: 100 | money }}</del>
+                  {% else %}
+                    <span> {{ price | times: 100 | money }}</span>
+                  {% endif %}
+                </p>
+              </div>
+              <!--
+                <div>
+                  <h2 class="product_suggestion">{{ block.settings.productSuggestion }}</h2>
+                </div>
+              -->
+            {% endif %}
+          {% endfor %}
+          <button id="addToCartBtn" class="add_to_cart" onclick="addToCart(this)">Add to cart</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+    .attribute-wrapper {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+
+  }
+
+  .attribute-wrapper h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 15px;
+
+  }
+
+  .attribute-wrapper .banner-image {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    object-fit: contain;
+    margin:auto;
+    margin-bottom: 10px;
+    border-radius: 6px;
+
+  }
+
+  .attribute-wrapper p {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 10px 0;
+  }
+
+  .attribute-wrapper p span {
+    color: #c49b6c;
+    font-weight: 600;
+  }
+
+  .attribute-points {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+    margin-top: 10px;
+  }
+         .product_list {
+         display: grid;
+         grid-template-columns:repeat(3,1fr) ;
+         /* grid-template-rows:100px;   */
+         place-item:center;
+         gap: 10px;
+         padding:0px 33px;
+         margin-bottom:20px;
+       }
+
+        .product_card {
+          width:100%;
+          height:100%;
+          display:flex;
+          flex-direction:column;
+          background:#eee;
+          padding:0px 10px;
+       }
+
+
+       .product_list input[type="radio"] {;
+         margin-right:10px;
+       }
+
+       .product_list input[type="radio"]:checked + img {
+         border: 2px solid #007aff;
+       }
+
+       .product_card img {
+            width: inherit;
+           height: 100px;
+           object-fit:contain;
+           padding:0;
+           margin:auto;
+         }
+      .product_card div  {
+           display:flex;
+           align-item:center;
+        padding:0px;
+        margin:0px;
+        }
+
+       .product_list p {
+         padding:2px;
+         margin:0px;
+         font-size: 15px;
+         text-align: center;
+       }
+        .product-carousel-section{
+          padding:0;
+        }
+         .drink_subscription_heading {
+         font-size: 30px;
+         color: black;
+         margin-bottom: 20px;
+         font-weight:bold;
+       }
+
+       .product_detail{
+         height:0px;
+         width:0px;
+         border:1px solid lightgray;
+         overflow:hidden;
+         border-radius:0px 0px 8px 8px;
+         margin-bottom:15px;
+       }
+       .product_detail_opend{
+         display:flex;
+         padding:10px 0px;
+         margin:0px 10px;
+         justify-content:space-between;
+         align-item:center;
+       }
+       .product_select{
+         margin:0px 34px;
+         padding:0px;
+         border-top:1px solid lightgray;
+       }
+
+       .product_select2{
+         margin:0px 34px;
+         padding:0px;
+       }
+        .product_detail_opend p{
+          padding:0px;
+          margin:0px
+        }
+        .product_detail_opend_label {
+          font-size: 20px;
+          font-weight:500;
+       }
+        .active_product_detail{
+          height:auto;
+          width:100%;
+          border:1px solid lightgray;
+          overflow:auto;
+          transation:all 0.9s ease ;
+        }
+
+       .drink_subscription {
+         width: inherit;
+         display: flex;
+       }
+
+       .subscription_cart {
+         width: 55%;
+         padding-left:100px;
+         padding-top:100px;
+
+       }
+         .subscription_cart .subscription_detail {
+          font-size:14px;
+           font-weight:600;
+
+       }
+       .carousel_view{
+          width: 45%;
+       }
+       .product_select_cart{
+         width:100%;
+         /* border-radius:8px; */
+         padding:10px 0px;
+       }
+       .add_to_cart{
+         width:100%;
+         padding:10px;
+         border:none;
+         background:black;
+         color:white;
+         border-radius:50px;
+         font-size:15px;
+       }
+       .product_select_cart .highlight_heading{
+          background:#A2845E;
+          text-align:center;
+          margin:0;
+          padding:10px;
+          color:white;
+          font-size:25px;
+          border-radius:8px 8px  0px 0px;
+       }
+       .product_highlight_list_item{
+         width:100%;
+         border:1px solid lightgray;
+         display:flex;
+         justify-content:space-between;
+         padding:10px;
+         margin:10px 0px;
+         border-radius:5px;
+       }
+         .product_highlight_list_item p{
+           margin:0;
+         }
+         .product_highlight_list_item p span{
+           font-weight:bold;
+         }
+         .product_highlight_list_item label{
+             font-size:17px;
+          }
+
+       .image_list{
+         width:100%;
+         display:grid;
+         gap:20px;
+         grid-template-columns:repeat(5,1fr) ;
+         padding: 0px 20px;
+         place-item:center;
+         /* background:lightgray;
+         padding:10px; */
+       }
+       .image_item{
+         height:100px;
+         background:#eee;
+         border-radius:5px;
+         display:flex;
+         justify-content:center;
+         cursor:pointer;
+       }
+       .image_item img {
+           width: inherit;
+           height: inherit;
+           /* max-width: 100%;
+           border-radius: 8px; */
+           padding:0;
+           margin:0;
+         }
+
+       .no_Image_text{
+         padding:10px;
+         text-align:center;
+       }
+
+       .carousel-nav-wrapper {
+         position: relative;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: 100%;
+         padding:0;
+         margin:0;
+       }
+
+         .carousel-btn {
+           color: #fff;
+           border: 1px solid gray;
+           padding: 12px;
+           cursor: pointer;
+           font-size: 18px;
+           z-index: 2;
+           transition: 0.2s ease;
+           position: absolute;
+           border-radius:50%;
+           color:black
+         }
+
+         .carousel-btn:hover {
+           background-color: lightgray;
+         }
+         .left{
+           top:calc(100% - 90px);
+           left:50px
+         }
+         .right{
+           top:calc(100% - 90px);
+           right:50px
+         }
+         .product-carousel-wrapper {
+           overflow: hidden;
+           margin: 20px;
+           width: 100%;
+         }
+
+         .product-carousel {
+           display: flex;
+           gap: 0;
+           overflow-x: auto;
+           scroll-snap-type: x mandatory;
+           scroll-behavior: smooth;
+
+           /* padding: 10px 0; */
+
+         }
+
+         .product-carousel::-webkit-scrollbar {
+           display: none;
+         }
+
+         .product-carousel {
+           -ms-overflow-style: none;
+           scrollbar-width: none;
+         }
+
+         .carousel-slide {
+           flex: 0 0 100%;
+           scroll-snap-align: center;
+           text-align: center;
+           height:500px;
+         }
+
+         .carousel-slide img {
+           width: inherit;
+           height: inherit;
+           /* max-width: 100%;
+           border-radius: 8px; */
+           padding:0;
+           margin:0;
+         }
+
+
+         .carousel-slide-placeholder {
+          width: inherit;
+           height: inherit;
+           background: #eee;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           border-radius: 8px;
+         }
+       .product_suggestion {
+         font-size:16px;
+         color:black;
+         padding:0px;
+       }
+       .product_item_list_hide{
+           display:none
+       }
+    /* Responsive end point */
+    @media (max-width: 700px) {
+      .drink_subscription {
+        width: inherit;
+        display: block;
+      }
+      .subscription_cart {
+        width: calc(100% - 20px);
+        padding:0px;
+        margin:10px;
+      }
+      .carousel_view {
+        width: 100%;
+      }
+      .product_select_cart .highlight_heading{
+          background:#A2845E;
+          padding:5px;
+          font-size:20px;
+       }
+        .product_highlight_list_item{
+         width:100%;
+         padding:5px;
+         margin:5px 0px;
+       }
+         .product_highlight_list_item p{
+           margin:0;
+         }
+         .product_highlight_list_item p span{
+           font-weight:bold;
+         }
+         .product_highlight_list_item label{
+             font-size:15px;
+          }
+      .product_detail_opend  .product_detail_opend_label {
+          font-size: 16px;
+          font-weight:500;
+       }
+
+      .product_list {
+         display: grid;
+         grid-template-columns:repeat(2,1fr) ;
+         /* grid-template-rows:100px;   */
+         place-item:center;
+         gap: 5px;
+       }
+        .product_card {
+          width:100%;
+          height:100%;
+       }
+        .image_list{
+         width:100%;
+         display:grid;
+         gap:20px;
+         grid-template-columns:repeat(4,1fr) ;
+         padding: 0px 10px;
+         place-item:center;
+         /* background:lightgray;
+         padding:10px; */
+       }
+
+    }
+</style>
+
+<script>
+  
+  function scrollCarousel(button, direction) {
+    const carousel = button.closest('.carousel-nav-wrapper').querySelector('.product-carousel');
+    const slide = carousel.querySelector('.carousel-slide');
+    const slideWidth = slide.offsetWidth;
+    carousel.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
+  }
+  
+function toggaleProductCartCheckBox(input,id,cliked_el_id) {
+  const targetEl =document.querySelector("#" + id)
+  const clickedEl =document.querySelector("#" + cliked_el_id)
+  targetEl.classList.toggle('active_product_detail')
+  clickedEl.classList.toggle('product_item_list_hide')
+  targetEl.querySelector('input').checked=true
+  
+  console.log("Target Element by ID:", document.querySelector("#" + id));
+  console.log("Before toggle:", input.value, input.checked);
+  console.log(`product_id_ ${id}`)
+  input.value = input.checked ? "on" : "off";
+}
+
+
+  
+
+let isCartAdding = false;
+    
+function addToCart(button) {
+  // Only respond to the specific button by ID
+  if (button.id !== "addToCartBtn"||isCartAdding) return;
+  isCartAdding =true
+  // Prevent multiple submissions
+  if (button.disabled) return;
+
+  // Disable button & show feedback
+  button.disabled = true;
+  button.textContent = 'Adding...';
+
+  const selected = document.querySelector('input[name="product_option"]:checked');
+  let productCount =1 
+   if (selected.id.includes('double_')) {
+      productCount=2
+  } 
+  if (!selected) {
+    alert('Please select a product.');
+    resetButton(button);
+    return;
+  }
+
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: selected.value, quantity: productCount })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Rate limited');
+    return res.json();
+  })
+  .then(data => {
+    console.log('Added to cart:', data);
+    window.location.href = '/cart';
+  })
+  .catch(err => {
+    console.error('Add to cart error:', err);
+    alert('Too many requests or server error. Try again shortly.');
+    resetButton(button);
+    isCartAdding=false
+  });
+}
+
+// Helper to reset button UI
+function resetButton(button) {
+  button.disabled = false;
+  button.textContent = 'Add to Cart';
+  isCartAdding=false
+}
+    
+ function click_Item_To_getScroll(imageUrl) {
+    const carousel = document.querySelector('.product-carousel');
+    const images = carousel.querySelectorAll('.carousel-slide-image');
+   
+    const imageUrlsArr = [];
+    images.forEach((el) => imageUrlsArr.push(el.id));
+
+   console.log(imageUrl,imageUrlsArr)
+    
+    const index = imageUrlsArr.findIndex((el) => el.split("?")[0] === imageUrl);
+    if (index === -1) return console.warn('Image not found');
+
+    const slide = carousel.querySelector('.carousel-slide');
+    const slideWidth = slide.offsetWidth;
+
+    carousel.scrollTo({ left: index * slideWidth, behavior: 'smooth' });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Slide Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top Picks",
+    },
+     {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Description about service and product",
+    },
+     {
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight",
+      "default": "Highlight about service and product",
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt Text",
+          "default": "Slide Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image List",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt Text",
+          "default": "Slide Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "highlight_list_item",
+      "name":"Highlight list item 1",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "number",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "number",
+          "id": "discountPercentage",
+          "label": "Discount Percentage",
+        },
+         {
+          "type": "text",
+          "id": "productSuggestion",
+          "label": "Product suggestion"
+        },
+           {
+      "type": "product",
+     "id": "product_cart_1_1",
+      "label": "Product"
+    },
+         {
+      "type": "product",
+     "id": "product_cart_1_2",
+      "label": "Product"
+    },
+        {
+      "type": "product",
+     "id": "product_cart_1_3",
+      "label": "Product"
+    },
+      {
+          "type": "text",
+          "id": "attributeQuestion",
+          "label": "Attribute Question"
+      },
+      {
+          "type": "image_picker",
+          "id": "bannerImage",
+          "label": "Attribute Banner Image"
+      },
+         {
+          "type": "richtext",
+          "id": "attributePoint",
+          "label": "Attribute Point"
+      },
+      ]
+    },
+    {
+      "type": "highlight_list_item_2",
+      "name":"Highlight list item 2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "number",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "number",
+          "id": "discountPercentage",
+          "label": "Discount Percentage",
+        },
+
+        {
+          "type": "text",
+          "id": "productSuggestion",
+          "label": "Product suggestion"
+        },
+        {
+      "type": "product",
+     "id": "product_cart_1_1",
+      "label": "Product"
+    },
+         {
+      "type": "product",
+     "id": "product_cart_1_2",
+      "label": "Product"
+    },
+        {
+      "type": "product",
+     "id": "product_cart_1_3",
+      "label": "Product"
+    },
+
+            {
+          "type": "text",
+          "id": "productSuggestion2",
+          "label": "Product suggestion"
+        },
+           {
+      "type": "product",
+     "id": "product_cart_2_1",
+      "label": "Product"
+    },
+         {
+      "type": "product",
+     "id": "product_cart_2_2",
+      "label": "Product"
+    },
+        {
+      "type": "product",
+     "id": "product_cart_2_3",
+      "label": "Product"
+    },
+          {
+          "type": "text",
+          "id": "attributeQuestion",
+          "label": "Attribute Question"
+      },
+      {
+          "type": "image_picker",
+          "id": "bannerImage",
+          "label": "Attribute Banner Image"
+      },
+         {
+          "type": "richtext",
+          "id": "attributePoint",
+          "label": "Attribute Point"
+      },
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Slide Carousel",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "image" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}
